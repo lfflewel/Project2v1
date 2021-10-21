@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+  <title>Flashcards</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+html, body {
+    background: linear-gradient(149deg, rgba(185,168,255,1) 0%, rgba(214,234,255,1) 48%, rgba(255,225,124,1) 100%);
+    background-repeat: no-repeat;
+    height: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+body {
+    margin: 0;
+    display: flex;
+}
+p {
+    margin-bottom: 0;
+    font-family: 'Montserrat-Thin', sans-serif;
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.container{
+    width: 80%;
+    border-radius: 30px;
+    height: 93vh;
+    margin: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.container .top {
+    margin: 5px;
+    width: 100%;
+    height: 30%;
+    display: flex;
+    flex-direction: row;
+}
+
+.container .bottom {
+    margin: 5px;
+    width: 100%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    align-self: center;
+    align-items: center;
+}
+
+#pageText {
+    padding: 20px 30px;
+    border-radius: 20px;
+    color: rgb(22, 22, 22);
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#navigation {
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+#pageText h5 {
+    letter-spacing: 10px;
+    font-size: 35px;
+    margin: 0;
+}
+
+#pageText p {
+    font-size: 20px;
+}
+
+#welcomeText{
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    transform: translate(-50%, -50%);
+    font-size: 25px;
+}
+
+    #navigation button {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        width: 130px;
+        height: 130px;
+        border-radius: 15px;
+        background-color: transparent;
+        border: 0;
+        outline: 0;
+        cursor: pointer;
+    }
+
+    #navigation button img {
+        width: 60px;
+        margin-bottom: 10px;
+    }
+
+    #navigation button span {
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .addNewCardBtn {
+      width: 220px;
+      padding: 5px;
+      border: 0;
+      background-color: #171717;
+      color: #FFFFFF;
+      cursor: pointer;
+    }
+
+    .addNewCardBtn:hover {
+      background-color: #ff5757;
+    }
+
+    /* Flashcards */
+    #flashcardsContainer {
+      height: 300px;
+      width: 100%;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      display: flex;
+      /* justify-content: center; */
+    }
+
+    .flashcard {
+      background-color: #66b0f0;
+      border-radius: 10px;
+      width: 400px;
+      height: 250px;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      word-wrap: break-word;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .flashcard:hover {
+      background-color: #a298db;
+      box-shadow: 5px 5px 5px #797979;
+    }
+
+    #flashcardsContainer form {
+      width: 400px;
+      height: 250px;
+      text-align: center;
+      margin: auto;
+      display: flex;
+      margin-right: 40px;
+    }
+
+    .flashcard div {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+  
+    }
+
+    .flashcard .answerSide {
+      background-color: #171717;
+      color: #FFFFFF;
+    }
+
+    .flashcard div p {
+      margin: auto;
+      -ms-transform: translateY(-50%);
+      transform: translateY(50%);
+      text-align: center;
+      height: 100%;
+      font-size: 18px;
+
+    }
+
+    .hide {
+      display: none;
+    }
+
+    ::-webkit-scrollbar {
+        background: transparent;
+        border: 1px solid #171717;
+        border-radius: 20px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #fcdd62;
+        border-radius: 20px;
+    }
+
+    #createNewCard {
+      display: none;
+      flex-direction: column;
+      border: 2px solid #171717;
+      border-radius: 10px;
+      padding: 20px;
+      width: 450px;
+      background-color: #cface8;
+    }
+
+    #createNewCard form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #createNewCard form label {
+      margin-bottom: 10px;
+      margin-top: 10px;
+    }
+
+    #createNewCard form input {
+      border: 0;
+      padding: 10px;
+    }
+
+    #createNewCard button {
+      border: 0;
+      padding: 10px;
+      background-color: #171717;
+      color: #FFFFFF;
+      border-radius: 10px;
+      margin: 20px 70px 0 70px;
+    }
+
+    #createNewCard button:hover {
+      cursor: pointer;
+      background-color: #573d6a;
+    }
+
+    .deleteBtn {
+      height: 50px;
+      padding: 10px 10px;
+      font-size: 18px;
+      font-weight: bold;
+      border: 0;
+      background-color: transparent;
+    }
+
+    .deleteBtn:hover {
+      color: #e33c3c;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top">
+      <div id="pageText">
+        <h5>FLASHCARDS</h5>
+          <button class="button addNewCardBtn" value= "add" id="show_card_box" onclick="showCardBox()">Add New Flashcard</button>
+      </div>
+      <div id="navigation">
+        <button type="button" class="navigation-buttons" onclick="location.href = '/homepage'">
+            <img src="./homeIcon.png">
+            <span>HOME</span>
+        </button>
+        <button type="button" class="navigation-buttons" onclick="location.href = '/decks'">
+          <img src="./decksIcon.png">
+          <span>DECKS</span>
+        </button>
+        <!-- <button type="button" class="navigation-buttons" onclick="location.href = '/game'">
+          <img src="./gameIcon.png">
+          <span>GAME</span>
+        </button> -->
+        <button type="button" class="navigation-buttons" onclick="location.href = '/logout'">
+            <img src="./logOutIcon.png">
+            <span>LOG OUT</span>
+        </button>
+      </div>
+    </div>
+    <div class="bottom">
+      <div id="createNewCard">
+        <h2>Create Flashcard</h2>
+          <form action="/createCards" method="POST">
+              <label for="question">Question</label>
+              <input type="text" id="qInput" name="question" maxlength="280"></textarea>
+              
+              <label for="answer" maxlength="280">Answer</label>
+              <input type="text" name="answer" id="aInput" maxlength="280"></textarea>
+              
+              <button type="submit" value="Save" onclick="addFlashCard()">Save</button>
+          </form>
+          <button id="close_card_box" onclick="closeCardBox()">Close</button>
+      </div>
+      <div id="flashcardsContainer">
+        <% for (var i = 0; i < cards.length; i++) { %>
+          <form method="POST" action="/deletecards"> 
+            <button class="deleteBtn" type="submit">X</button>
+            <div class="flashcard">
+                <div class="questionSide" id="question-<%= i %>" onclick="toggleFlashCard('question', '<%= i %>')"><p><%= cards[i].Question %></p></div>
+                <div  class="answerSide hide" id="answer-<%= i %>" onclick="toggleFlashCard('answer', '<%= i %>')"><p><%= cards[i].Answer %></p></div>
+                <input name="cardID" type="hidden" value="<%= cards[i].cardID %>"></input>
+            </div>
+        </form>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // add card box and hid add/del buttons
+  function showCardBox() {
+      document.getElementById("createNewCard").style.display = "flex";
+      document.getElementById("flashcardsContainer").style.display = "none";
+    
+    };
+
+    // hide new card box unhide add/del buttons
+  function closeCardBox() {
+    document.getElementById("qInput").value = '';
+    document.getElementById("aInput").value = '';
+    document.getElementById("createNewCard").style.display = "none";
+    document.getElementById("flashcardsContainer").style.display = "flex";
+  };
+
+  
+    function toggleFlashCard(side, cardNumber) {
+
+      console.log(cardNumber);
+      console.log(document.getElementById(`question-${cardNumber}`));
+      
+
+      if (side === "question")
+      {
+        document.getElementById(`question-${cardNumber}`).classList.add("hide");
+        document.getElementById(`answer-${cardNumber}`).classList.remove("hide");
+      }
+      else if (side === "answer")
+      {
+        document.getElementById(`question-${cardNumber}`).classList.remove("hide");
+        document.getElementById(`answer-${cardNumber}`).classList.add("hide");
+      }
+    };
+
+  </script>
+  <script src="index.js"></script>
+</body>
+</html>

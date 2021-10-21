@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oopsies</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+        
+        html {
+            height: 100%;
+        }
+        body {
+            background: linear-gradient(149deg, rgba(185,168,255,1) 0%, rgba(214,234,255,1) 48%, rgba(255,225,124,1) 100%);
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: center;
+            text-align: center;
+        }
+
+        div h1 {
+            font-size: 90px;
+            margin-bottom: 0;
+        }
+
+        input[type=submit] {
+            margin: auto;
+            padding: 10px;
+            background-color: #71b9ff;
+            color: #fff;
+            border: none;
+            font-size: 22px;
+            border-radius: 10px;
+            transition: box-shadow 0.5s;
+            outline: none;
+            cursor: pointer;
+            width: 350px;
+        }
+
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Oopsie!</h1>
+        <h3>Looks like we can't find your account :(</h5>
+        <p>Please double check your username and password before login again.</p>
+        <p>If you don't have an account, feel free to register instead!</p>
+        <form action="/goBackToLogin" method="POST">
+            <input type="submit" name="login-btn" class="btn" value="Go Back">
+        </form>
+    </div>
+</body>
+</html>
