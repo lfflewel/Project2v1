@@ -74,6 +74,7 @@ let activeUserLName;
 let activeUserFullName;
 let activeUserEmail;
 let activeUserRole;
+let activeUserFirstPW;
 /*---------------------------------------------------------------*/
 /*
     NOTES:
@@ -153,10 +154,12 @@ app.post('/login', (req, res) => {
                     activeUserLName = results[0].uLName;
                     activeUserEmail = results[0].uEmail;
                     activeUserRole = results[0].uRole;
+                    activeUserFirstPW = results[0].uFirstPass;
                     companyId = results[0].ucId;
                     activeUserFullName = activeUserFName + ' ' + activeUserLName;
                     console.log(`User ID: ${activeUserId}`);
                     console.log(`User Full Name: ${activeUserFullName}`);
+                    console.log(`User First Password?: ${activeUserFirstPW}`);
 
                     console.log('User matched with company.');
                     console.log(results);        
