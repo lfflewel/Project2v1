@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CompanySetup</title>
+    <title>ADD USER</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
@@ -280,9 +280,9 @@
                     <img src="./homeIcon.png">
                     <span>HOME</span>
                 </button>
-                <button type="button" class="navigation-buttons" onclick="location.href = '/game'">
-                    <img src="./gameIcon.png">
-                    <span>GAME</span>
+                <button type="button" class="navigation-buttons" onclick="location.href = '/addUser'">
+                    <img src="./adduser.png">
+                    <span>Add User</span>
                 </button> 
                 
                 <button type="button" class="navigation-buttons" onclick="location.href = '/logout'">
@@ -295,22 +295,21 @@
                Add User
                <section id="user_info" class="desktop">
                    <div class="form-container hide" id="loginForm">
-                       <form action="/initCompany" method="POST">
-                            <input type="text" name="companyName" class="input-box" placeholder="Company Name">
-                             <p>Upload photo.</p>
-                            <input type="file" id="companyLogo" name="filename">
+                       <form action="/createUser" method="POST">  
                             <p>User Information</p>
                             <input type="text" name="userLName" class="input-box" placeholder="Last Name">
-                            <input type="text" name="userEmail" class="input-box" placeholder="Email">
-                            <input type="text" name="userPW" class="input-box" placeholder="Password">
                             <input type="text" name="userFName" class="input-box" placeholder="First Name">
+                            <input type="text" name="userEmail" class="input-box" placeholder="Email">
+                            <input type="text" name="userPW" class="input-box" placeholder="Password">                            
                             <select id="selectRole" name="selectRole">
                                 <option value="0">Select Role</option>
                                 <% for (var i=0; i < role.length; i++) { %>
                                     <option value="<%= roles[i] %>"><%= roles[i] %></option>
                                 <% } %>    
                             </select>
-                            <p>Upon successful registration, you will be directed to login.</p>
+                            <p>Upload photo.</p>
+                            <input type="file" id="userPhoto" name="filename">
+                            <!-- <p>Upon successful registration, you will be directed to login.</p> -->
                             <input type="submit" name="submit-btn" class="btn" value="Submit">
                        </form>
                    </div>

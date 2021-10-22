@@ -273,7 +273,8 @@
     <div class="container">
         <div class="top">
             <div id="greetings">
-                <h5>HELLO THERE!</h5>
+                <h5><%= companyName %></h5>
+                <!-- ADD COMPANY LOGO -->
                 <p><b>Welcome, <%= activeUserFullName %>.</b></p>
                 <p>PLACEHOLDER FOR SOMETHING. THIS PAGE WILL DISPLAY DIFFERANTLY FOR EACH ROLE</p>
             </div>
@@ -282,10 +283,10 @@
                     <img src="./homeIcon.png">
                     <span>HOME</span>
                 </button>
-                <!-- <button type="button" class="navigation-buttons" onclick="location.href = '/game'">
-                    <img src="./gameIcon.png">
-                    <span>GAME</span>
-                </button> -->
+                <button type="button" class="navigation-buttons" onclick="location.href = '/addUser'">
+                    <img src="./adduser.png">
+                    <span>Add User</span>
+                </button>
                 
                 <button type="button" class="navigation-buttons" onclick="location.href = '/logout'">
                     <img src="./logOutIcon.png">
@@ -297,35 +298,10 @@
             <button type="button" class="navigation-buttons" id="createNewUserBtn" onclick="location.href = '/addUsers'">
                 ADD A NEW USER
             </button>
-            <!-- <h2>YOUR COURSES:</h2>
-            <div class="courseList">
-                <% for (var i=0; i < courses.length; i++) { %>
-                    <form action="/abc" method="POST">
-                        <input type="hidden" name="selectedCourse" value="<%= courses[i] %>">
-                        <div class="courseContainer">
-                            <button id="deleteCourseBtn" type="submit" formaction="/deleteCourse">X</button>
-                            <button type="submit" id="selectCourseBtn" formaction="/getDecks">
-                                    <h4><%= courses[i] %></h4>
-                            </button>
-                        </div>
-                    </form>
-                <% } %>    
-            </div> -->
+            
         </div>
          <div class="right">
-            <!-- <div id="existingCourses">
-                <h5>COURSE<br>SELECTION:</h5>
-                <div id="dropdownList">
-                    <form action="/getDecks" method="POST">
-                        <select id="selectedCourse" name="selectedCourse" onchange="this.form.submit()">
-                            <option value="0">Select Course</option>
-                            <% for (var i=0; i < courses.length; i++) { %>
-                                <option value="<%= courses[i] %>"><%= courses[i] %></option>
-                            <% } %>    
-                        </select>
-                    </form>
-                </div>
-            </div> -->
+           
         </div>
     </div>
     <script src="index.js"></script> 

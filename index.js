@@ -71,7 +71,7 @@ let roles = ["Admin", "Program Manager", "Mentor", "Mentee"];
 let activeUserId;
 let activeUserFName;
 let activeUserLName;
-let activeUserFullName = activeUserFName + ' ' + activeUserLName;
+let activeUserFullName;
 let activeUserEmail;
 let activeUserRole;
 /*---------------------------------------------------------------*/
@@ -114,7 +114,7 @@ app.post('/goBackToLogin', function(req, res) {
 app.get('/', function(req, res) {
     // res.render('page') will render the html to localhost:3000
     res.render('login', {canAddNewMessage, canAddNewMessage1, canAddNewMessage2});
-  });
+});
 
 
 // The actual method that will get the sign in values typed in and then validate it
@@ -134,7 +134,7 @@ app.post('/login', (req, res) => {
     
             // call to db --> pass in the useremail && passwod as the parameters [] for the QUERY string below
             // inside the query statement, we also define a function that will handle the error, results from the SQL query
-            pool.query('SELECT * FROM User WHERE uEmail = ? AND uPass = ?', [useremail, password], function (err, results) {
+            pool.query('SELECT * FROM User JOIN Company on ucId = cId WHERE uEmail = ? AND uPass = ?', [useremail, password], function (err, results) {
                 if (err) throw err;
     
                 if (results.length > 0) {
@@ -153,10 +153,22 @@ app.post('/login', (req, res) => {
                     activeUserLName = results[0].uLName;
                     activeUserEmail = results[0].uEmail;
                     activeUserRole = results[0].uRole;
+                    companyId = results[0].ucId;
+                    activeUserFullName = activeUserFName + ' ' + activeUserLName;
                     console.log(`User ID: ${activeUserId}`);
+                    console.log(`User Full Name: ${activeUserFullName}`);
+
+                    console.log('User matched with company.');
+                    console.log(results);        
     
+                    // we will also assign that to a global variable above ---> in also case of needing to reference it in other methods below
+                    companyId = results[0].cId;
+                    companyName = results[0].cName;
+                    companyLogo = results[0].uLName;
+                    console.log(`Company Name: ${companyName}`);                  
+            
                     // redirect user to HOMEPAGE
-                    res.redirect('/homepage');
+                    res.render('homepage', {activeUserFullName, companyName, companyLogo});
                 }
                 else
                 {
@@ -185,6 +197,12 @@ app.post('/getStarted', function(req, res) {
 /* ----------------------------------------------------------- */
 
 /* -- COMPANY SETUP------------------------------------ */
+
+// Render company.html (getstarted button)
+app.post('/getStarted', function(req, res) {
+    res.render('company');
+});
+
 app.post('/initCompany', function(req, res) {
 
     companyName =  req.body.companyName;
@@ -255,4 +273,18 @@ app.get('/homepage', function (req, res) {
 
 
 
+/*--------NEW USER**********************************************/
+
+// Render adduser.html (adduser button)
+app.post('/addUser', function(req, res) {
+    res.render('adduser');
+});
+
+// Create New User
+app.post('/createUser', function(req, res) {
+
+    //empty method for now
+});
+
 /* ----------------------------------------------------------- */
+
