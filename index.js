@@ -183,23 +183,22 @@ app.post('/getStarted', function(req, res) {
 /* -- COMPANY SETUP------------------------------------ */
 app.post('/initCompany', function(req, res) {
 
-    var companyName =  req.body.companyName;
-    var companyLogo = req.body.companyLogo;
+    companyName =  req.body.companyName;
+    companyLogo = req.body.companyLogo;
     var adminFName = req.body.adminFName;
     var adminLName = req.body.adminLName;
     var adminEmail = req.body.adminEmail;
     var adminPW = req.body.adminPW;
 
     //Create New Company
-    pool.query('INSERT INTO Company (cName, cLogo) VALUES ("${companyName}", "${companyLogo}")', function (err, results) {
-        if (err) {
-            console.log(err);                
-        }
-        else {
-            companyId = results.insertId
-            console.log(`Company Id: ${companyId}`);
-            canAddNewMessage = true;
-        }
+    pool.query(`INSERT INTO Company (cName, cLogo) VALUES ("${companyName}", "${companyLogo}")`, function (err, results) {
+        if (err) throw err;
+        companyId = results.insertId
+        console.log('Company Account Inserted');
+        console.log(`Company ID : ${companyId}`)
+        res.redirect('/');
+    })
+    
         console.log(companyName);
         console.log(companyLogo);
         console.log(adminFName);
