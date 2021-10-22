@@ -173,10 +173,10 @@ app.get('/logout', function(req, res) {
 
 /* ----------------------------------------------------------- */
 
-// REDIRECT TO COMPANY PAGE
-app.get('/getStarted', function(req, res) {
-    res.redirect('/company');
-}); // End /logout
+// RENDER COMPANY PAGE
+app.post('/getStarted', function(req, res) {
+    res.render('company');
+})
 
 /* ----------------------------------------------------------- */
 

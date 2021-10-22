@@ -16,12 +16,12 @@
     <div class="container">
          <!--LOGIN SECTION-->
         <section id="login-section" class="desktop">
-            <div class="cover-container" id="loginCover">
+            <div class="cover-container hide" id="loginCover">
                 <h1>Welcome !</h1>
                 <h3>Already have a Company Account?</h3>
                 <button type="button" class="switch-btn" onclick="toggleLoginSignup('login')">Login</button>
             </div>
-            <div class="form-container hide" id="loginForm">
+            <div class="form-container" id="loginForm">
                 <h1>Login</h1>
                 <form action="/login" method="POST">
                     <input type="text" name="username" class="input-box" placeholder="User Name">
@@ -34,9 +34,10 @@
         <!--SIGN UP SECTION-->       
       
         <section id="signup-section" class="desktop">
-            <div class="cover-container hide" id="signupCover">
+            <div class="cover-container" id="signupCover">
                 <h1>Welcome!</h1>
-                <h3>Don't have a company account? Register your company and start your free 30 day trial today.</h3>
+                <h3>Don't have a company account?</h3>
+                <h3>Register your <u>company </u>and <u>start your FREE 30 day trial today.</u></h3>
                 <!-- <button type="button" class="switch-btn" onclick="toggleLoginSignup('Get Started')"></button> -->
                 <form action="/getStarted" method="post">
                     <input type="submit" name="signup-btn" class="btn" value="Get Started">
