@@ -275,38 +275,23 @@
             <div id="greetings">
                 <h5>Company Registration</h5>
             </div>
-            <!-- <div id="navigation">
-                <button type="button" class="navigation-buttons" onclick="location.href = '/homepage'">
-                    <img src="./homeIcon.png">
-                    <span>HOME</span>
-                </button>
-                <button type="button" class="navigation-buttons" onclick="location.href = '/game'">
-                    <img src="./gameIcon.png">
-                    <span>GAME</span>
-                </button> 
-                
-                <button type="button" class="navigation-buttons" onclick="location.href = '/logout'">
-                    <img src="./logOutIcon.png">
-                    <span>LOG OUT</span>
-                </button>
-            </div> -->
         </div>
         <div class="bottom">
                Company Profile
                <section id="company_info" class="desktop">
                    <div class="form-container hide" id="loginForm">
                        <form action="/initCompany" method="POST">
-                            <input type="text" name="companyName" class="input-box" placeholder="Company Name">
+                            <input type="text" name="companyName" class="input-box" placeholder="Company Name" required>
                              <p>Upload your company logo.</p>
                             <input type="file" id="companyLogo" name="filename">
                             <p>Account Administrator</p>
-                            <input type="text" name="adminFName" class="input-box" placeholder="First Name">
-                            <input type="text" name="adminLName" class="input-box" placeholder="Last Name">
-                            <input type="text" name="adminEmail" class="input-box" placeholder="Email">
-                            <input type="text" name="adminPW" class="input-box" placeholder="Password">
+                            <input type="text" name="adminFName" class="input-box" placeholder="First Name" required>
+                            <input type="text" name="adminLName" class="input-box" placeholder="Last Name" required>
+                            <input type="text" name="adminEmail" class="input-box" placeholder="Email" required>
+                            <input type="text" name="adminPW" class="input-box" placeholder="Password" required>
                             <p>Upon successful registration, you will be directed to login.</p>
                             <input type="submit" name="submit-btn" class="btn" value="Submit">
-                       </form>
+                       </form>                       
                    </div>
                </section>   
     </div>

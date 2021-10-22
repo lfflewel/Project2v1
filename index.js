@@ -75,6 +75,7 @@ let activeUserFullName;
 let activeUserEmail;
 let activeUserRole;
 let activeUserFirstPW;
+let newUserMessage = "";
 /*---------------------------------------------------------------*/
 /*
     NOTES:
@@ -193,9 +194,9 @@ app.get('/logout', function(req, res) {
 /* ----------------------------------------------------------- */
 
 // RENDER COMPANY PAGE
-app.post('/getStarted', function(req, res) {
-    res.render('company');
-})
+// app.post('/getStarted', function(req, res) {
+//     res.render('company');
+// })
 
 /* ----------------------------------------------------------- */
 
@@ -203,7 +204,7 @@ app.post('/getStarted', function(req, res) {
 
 // Render company.html (getstarted button)
 app.post('/getStarted', function(req, res) {
-    res.render('company');
+    res.render('company');    
 });
 
 app.post('/initCompany', function(req, res) {
@@ -222,26 +223,38 @@ app.post('/initCompany', function(req, res) {
     console.log(adminEmail);
     console.log(adminPW);
 
-    //Create New Company
-    pool.query(`INSERT INTO Company (cName, cLogo) VALUES ("${companyName}", "${companyLogo}")`, function (err, results) {
+    pool.query('SELECT * FROM User WHERE uEmail = ?' , [adminEmail], function(err, results, fields) {
         if (err) throw err;
-        companyId = results.insertId
-        console.log('Company Account Inserted');
-        console.log(`Company ID : ${companyId}`)
-        res.redirect('/');
 
-               //Create Company's Sys Admin
-               pool.query(`INSERT INTO User (uFName, uLName, uEmail, uPass, uRole, ucId) VALUES ("${adminFName}", "${adminLName}", "${adminEmail}", "${adminPW}", "Admin", "${companyId}")`, function (err, results) {
-                if (err) {
-                    console.log(err);                
-                }
-                else {
-                    var sysAdminId = results.insertId
-                    console.log(`System Admin Id: ${sysAdminId}`);
-                    canAddNewMessage = true;
-                }
-            }); //End Insert User (child)
-    }); // End Insert Company (parent) 
+        if (results.length > 0) {
+            canAddNewMessage = false;
+            newUserMessage = 'Email already exists, enter a different email.';
+            // res.redirect('/getStarted');            
+            console.log('Email already exists');
+        }        
+        else {               
+            //Create New Company
+            pool.query(`INSERT INTO Company (cName, cLogo) VALUES ("${companyName}", "${companyLogo}")`, function (err, results) {
+                if (err) throw err;
+                companyId = results.insertId
+                console.log('Company Account Inserted');
+                console.log(`Company ID : ${companyId}`)
+                res.redirect('/');
+
+                    //Create Company's Sys Admin
+                    pool.query(`INSERT INTO User (uFName, uLName, uEmail, uPass, uRole, ucId) VALUES ("${adminFName}", "${adminLName}", "${adminEmail}", "${adminPW}", "Admin", "${companyId}")`, function (err, results) {
+                        if (err) {
+                            console.log(err);                
+                        }
+                        else {
+                            var sysAdminId = results.insertId
+                            console.log(`System Admin Id: ${sysAdminId}`);
+                            canAddNewMessage = true;
+                        }
+                    }); //End Insert User (child)
+            }); // End Insert Company (parent) 
+        };
+    }); // End Select
 }); //End /initCompany
 
 /* ----------------------------------------------------------- */
@@ -279,15 +292,58 @@ app.get('/homepage', function (req, res) {
 /*--------NEW USER**********************************************/
 
 // Render adduser.html (adduser button)
-app.post('/addUser', function(req, res) {
-    res.render('adduser');
+app.get('/addUser', function(req, res) {
+    // newUserMessage = 'Please enter user information.';
+    res.render('adduser', {roles, companyName, companyLogo, activeUserFullName, newUserMessage});
 });
 
 // Create New User
 app.post('/createUser', function(req, res) {
 
-    //empty method for now
-});
+    var newUserFName = req.body.userFName;
+    var newUserLName = req.body.userLName;
+    var newUserEmail = req.body.userEmail;
+    var newUserPW = req.body.userPW;
+    var newUserRole = req.body.userRole;
+    var newUserPhoto = req.body.userPhoto;
+
+    console.log(newUserFName);
+    console.log(newUserLName);
+    console.log(newUserEmail);
+    console.log(newUserPW);
+    console.log(newUserRole);
+    console.log(newUserPhoto);
+
+    pool.query('SELECT * FROM User WHERE uEmail = ?' , [newUserEmail], function(err, results, fields) {
+        if (err) throw err;
+
+        if (results.length > 0) {
+            canAddNewMessage = false;
+            newUserMessage = 'Email already exists, enter a different email.';
+            res.redirect('/addUser');
+            console.log('Email already exists');
+        }        
+        else {
+                //save dato into the database
+                pool.query(`INSERT INTO User (uFName, uLName, uEmail, uPass, uRole, ucId) VALUES ("${newUserFName}", "${newUserLName}", "${newUserEmail}", "${newUserPW}", "${newUserRole}", "${companyId}")`, function (err, results) {
+                    if (err) {
+                        console.log(err);                
+                    }
+                    else {
+                        newUserMessage = 'User added.';
+                        var newUserId = results.insertId
+                        console.log(`New User Id: ${newUserId}`);
+                        canAddNewMessage = true;                
+                        
+                    }
+                    res.redirect('/addUser');
+                }); //end Insert 
+                
+            };         
+    }); // End Select
+    
+}); //End /createUser
 
 /* ----------------------------------------------------------- */
+
 
