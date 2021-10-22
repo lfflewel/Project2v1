@@ -183,12 +183,12 @@ app.post('/getStarted', function(req, res) {
 /* -- COMPANY SETUP------------------------------------ */
 app.post('/initCompany', function(req, res) {
 
-    companyName =  req.body.companyname;
-    companyLogo = req.body.companylogo;
+    companyName =  req.body.companyName;
+    companyLogo = req.body.companyLogo;
     let adminFName = req.body.adminFName;
     let adminLName = req.body.adminLName;
-    let adminEmail = req.body.adminemail;
-    let adminPW = req.body.adminpw;
+    let adminEmail = req.body.adminEmail;
+    let adminPW = req.body.adminPW;
 
     console.log(companyName);
     console.log(companyLogo);
@@ -202,8 +202,7 @@ app.post('/initCompany', function(req, res) {
         pool.query('INSERT INTO Company (cName, cLogo) VALUES ("${companyName}", $"{companyLogo}"); INSERT INTO User (uFName, uLName, uEmail, uPass, uRole, ucId) VALUES ("${adminFName}", "${adminLName}", "${adminEmail}", "${adminPW}", "Admin", "${companyId}");',
         function (err, results) {
             if (err) {
-                console.log(err);
-                
+                console.log(err);                
             }
             else {
                 companyId = results.insertId
@@ -212,12 +211,15 @@ app.post('/initCompany', function(req, res) {
             }
         }) // End session
     } // End  Create new company
+    else {
+        console.log("Not loggedin to session.");
+    }
 }); //End /initCompany
 /* ----------------------------------------------------------- */
 
 /* -- HOMEPAGE ----------------------------------------------- */
 app.get('/homepage', function (req, res) {
-    // if (req.session.loggedin) {
+    if (req.session.loggedin) {
     //     // canAddNewMessage = true;
     //     // Do whatever needed / whatever to be display when upon rendering the homepage
 
@@ -238,7 +240,7 @@ app.get('/homepage', function (req, res) {
             // we would pass the variables in like res.render('page.html', {var}) --> can also pass multiple vars with commas
             res.render('homepage.html', {companyName, companyLogo, activeUserFullName});
     //    });
-  //  }
+    }
 }); //End /Homepage
 
 /* ----------------------------------------------------------- */
