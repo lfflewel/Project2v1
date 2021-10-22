@@ -149,7 +149,7 @@ app.post('/login', (req, res) => {
                     activeUserId = results[0].uId;
                     activeUserFName = results[0].uFName;
                     activeUserLName = results[0].uLName;
-                    console.log(`Account ID: ${activeUserId}`);
+                    console.log(`User ID: ${activeUserId}`);
     
                     // redirect user to HOMEPAGE
                     res.redirect('/homepage');
@@ -183,38 +183,49 @@ app.post('/getStarted', function(req, res) {
 /* -- COMPANY SETUP------------------------------------ */
 app.post('/initCompany', function(req, res) {
 
-    companyName =  req.body.companyName;
-    companyLogo = req.body.companyLogo;
-    let adminFName = req.body.adminFName;
-    let adminLName = req.body.adminLName;
-    let adminEmail = req.body.adminEmail;
-    let adminPW = req.body.adminPW;
+    var companyName =  req.body.companyName;
+    var companyLogo = req.body.companyLogo;
+    var adminFName = req.body.adminFName;
+    var adminLName = req.body.adminLName;
+    var adminEmail = req.body.adminEmail;
+    var adminPW = req.body.adminPW;
 
-    console.log(companyName);
-    console.log(companyLogo);
-    console.log(adminFName);
-    console.log(adminLName);
-    console.log(adminEmail);
-    console.log(adminPW);
+    //Create New Company
+    pool.query('INSERT INTO Company (cName, cLogo) VALUES ("${companyName}", "${companyLogo}")', function (err, results) {
+        if (err) {
+            console.log(err);                
+        }
+        else {
+            companyId = results.insertId
+            console.log(`Company Id: ${companyId}`);
+            canAddNewMessage = true;
+        }
+        console.log(companyName);
+        console.log(companyLogo);
+        console.log(adminFName);
+        console.log(adminLName);
+        console.log(adminEmail);
+        console.log(adminPW);
+    }) 
+        //Create Company's Sys Admin
+    //     pool.query('INSERT INTO User (uFName, uLName, uEmail, uPass, uRole, ucId) VALUES ("${adminFName}", "${adminLName}", "${adminEmail}", "${adminPW}", "Admin", "${companyId}")', function (err, results) {
+    //     if (err) {
+    //         console.log(err);                
+    //     }
+    //     else {
+    //         var sysAdminId = results.insertId
+    //         console.log(`System Admin Id: ${sysAdminId}`);
+    //         canAddNewMessage = true;
+    //     }
+    // }) 
 
-    //Create New Company and 1st Admin User
-    if (req.session.loggedin) {
-        pool.query('INSERT INTO Company (cName, cLogo) VALUES ("${companyName}", $"{companyLogo}"); INSERT INTO User (uFName, uLName, uEmail, uPass, uRole, ucId) VALUES ("${adminFName}", "${adminLName}", "${adminEmail}", "${adminPW}", "Admin", "${companyId}");',
-        function (err, results) {
-            if (err) {
-                console.log(err);                
-            }
-            else {
-                companyId = results.insertId
-                console.log("Company Created");
-                canAddNewMessage = true;
-            }
-        }) // End session
+        // End session
     } // End  Create new company
-    else {
-        console.log("Not loggedin to session.");
-    }
-}); //End /initCompany
+    // else {
+    //     console.log("Not loggedin to session.");
+    // }
+// }); //End /initCompany
+);
 /* ----------------------------------------------------------- */
 
 /* -- HOMEPAGE ----------------------------------------------- */
