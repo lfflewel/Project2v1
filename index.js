@@ -72,6 +72,8 @@ let activeUserId;
 let activeUserFName;
 let activeUserLName;
 let activeUserFullName = activeUserFName + ' ' + activeUserLName;
+let activeUserEmail;
+let activeUserRole;
 /*---------------------------------------------------------------*/
 /*
     NOTES:
@@ -116,23 +118,23 @@ app.get('/', function(req, res) {
 
 
 // The actual method that will get the sign in values typed in and then validate it
-// compare to db record - validate --> then redirect as needed
+// compare to db record - validate --> then redirect as needed.
 app.post('/login', (req, res) => {
 
     // use req.body.varName when we want to retrieve the value entered on the HTML textboxes...etc
-        var username = req.body.username;
+        var useremail = req.body.useremail;
         var password = req.body.password;
     
         console.log('Begin validating user...');
-        console.log(`Username: ${req.body.username}`);
-        console.log(`Password: ${req.body.password}`);
+        console.log(`Useremail: ${useremail}`);
+        console.log(`Password: ${password}`);
     
-        // if (username == valid && password == valid)
-        if (username && password) {
+        // if (useremail == valid && password == valid)
+        if (useremail && password) {
     
-            // call to db --> pass in the username && passwod as the parameters [] for the QUERY string below
+            // call to db --> pass in the useremail && passwod as the parameters [] for the QUERY string below
             // inside the query statement, we also define a function that will handle the error, results from the SQL query
-            pool.query('SELECT * FROM Users WHERE uName = ? AND uPass = ?', [username, password], function (err, results) {
+            pool.query('SELECT * FROM User WHERE uEmail = ? AND uPass = ?', [useremail, password], function (err, results) {
                 if (err) throw err;
     
                 if (results.length > 0) {
@@ -141,14 +143,16 @@ app.post('/login', (req, res) => {
                     console.log(results);
     
                     // now we set our session.loggedin to be true
-                    // set the session username to the signed in username --> in case of needing to reference it in other methods below
+                    // set the session useremail to the signed in useremail --> in case of needing to reference it in other methods below
                     req.session.loggedin = true;
-                    req.session.username = username;
+                    req.session.useremail = useremail;
     
                     // we will also assign that to a global variable above ---> in also case of needing to reference it in other methods below
                     activeUserId = results[0].uId;
                     activeUserFName = results[0].uFName;
                     activeUserLName = results[0].uLName;
+                    activeUserEmail = results[0].uEmail;
+                    activeUserRole = results[0].uRole;
                     console.log(`User ID: ${activeUserId}`);
     
                     // redirect user to HOMEPAGE
@@ -190,6 +194,13 @@ app.post('/initCompany', function(req, res) {
     var adminEmail = req.body.adminEmail;
     var adminPW = req.body.adminPW;
 
+    console.log(companyName);
+    console.log(companyLogo);
+    console.log(adminFName);
+    console.log(adminLName);
+    console.log(adminEmail);
+    console.log(adminPW);
+
     //Create New Company
     pool.query(`INSERT INTO Company (cName, cLogo) VALUES ("${companyName}", "${companyLogo}")`, function (err, results) {
         if (err) throw err;
@@ -197,34 +208,21 @@ app.post('/initCompany', function(req, res) {
         console.log('Company Account Inserted');
         console.log(`Company ID : ${companyId}`)
         res.redirect('/');
-    })
-    
-        console.log(companyName);
-        console.log(companyLogo);
-        console.log(adminFName);
-        console.log(adminLName);
-        console.log(adminEmail);
-        console.log(adminPW);
-    }) 
-        //Create Company's Sys Admin
-    //     pool.query('INSERT INTO User (uFName, uLName, uEmail, uPass, uRole, ucId) VALUES ("${adminFName}", "${adminLName}", "${adminEmail}", "${adminPW}", "Admin", "${companyId}")', function (err, results) {
-    //     if (err) {
-    //         console.log(err);                
-    //     }
-    //     else {
-    //         var sysAdminId = results.insertId
-    //         console.log(`System Admin Id: ${sysAdminId}`);
-    //         canAddNewMessage = true;
-    //     }
-    // }) 
 
-        // End session
-    } // End  Create new company
-    // else {
-    //     console.log("Not loggedin to session.");
-    // }
-// }); //End /initCompany
-);
+               //Create Company's Sys Admin
+               pool.query(`INSERT INTO User (uFName, uLName, uEmail, uPass, uRole, ucId) VALUES ("${adminFName}", "${adminLName}", "${adminEmail}", "${adminPW}", "Admin", "${companyId}")`, function (err, results) {
+                if (err) {
+                    console.log(err);                
+                }
+                else {
+                    var sysAdminId = results.insertId
+                    console.log(`System Admin Id: ${sysAdminId}`);
+                    canAddNewMessage = true;
+                }
+            }); //End Insert User (child)
+    }); // End Insert Company (parent) 
+}); //End /initCompany
+
 /* ----------------------------------------------------------- */
 
 /* -- HOMEPAGE ----------------------------------------------- */
